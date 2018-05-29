@@ -15,8 +15,8 @@ namespace QuoteGeneratorTTK
         {
             try
             {
-                Session session = new Session(ConfigurationManager.AppSettings["DefaultUser"].ToString(), ConfigurationManager.AppSettings["DefaultPass"].ToString(), Session.LicenseType.Default, String.Format(ConfigurationManager.AppSettings["epiConnection"].ToString(), "Epicor10"));
-
+                Session session = new Session(ConfigurationManager.AppSettings["DefaultUser"].ToString(), ConfigurationManager.AppSettings["DefaultPass"].ToString(), Session.LicenseType.EnterpriseProcessing, String.Format(ConfigurationManager.AppSettings["epiConnection"].ToString(), "Epicor10"));
+                
                 if (session != null)
                 {
                     Functions process = new Functions();
@@ -24,6 +24,9 @@ namespace QuoteGeneratorTTK
                 }
                 else
                     Console.WriteLine("No se encontraron cotizaciones a generar!!!");
+
+                session.Dispose();
+                session = null;
             }
             catch (System.UnauthorizedAccessException x)
             {

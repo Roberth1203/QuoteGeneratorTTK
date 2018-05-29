@@ -29,8 +29,8 @@ namespace QuoteGeneratorTTK
                 foreach (DataRow row in d.Rows)
                 {
 
-                    Console.WriteLine(String.Format("[Registro {0}] -> idCliente: {1} Folio: {2} monedaLlave: {3}", index, row[2].ToString(), row[20].ToString(), row[21].ToString()));
-                    log.writeOnLog(String.Format("[{0}] - Cliente obtenido -> {1} Folio: -> {2}", DateTime.Now.ToString(), row[2].ToString(), row[20].ToString()));
+                    Console.WriteLine(String.Format("[Registro {0}] -> idCliente: {1} Folio: {2}", index, row[2].ToString(), row[19].ToString()));
+                    log.writeOnLog(String.Format("[{0}] - Cliente obtenido -> {1} Folio: -> {2}", DateTime.Now.ToString(), row[2].ToString(), row[19].ToString()));
 
                     Int32 existe = epic.CustomerExists(row[2].ToString(), out String CustName);
 

@@ -400,5 +400,6 @@ namespace Epicor
                 ExceptionCollector += String.Format("QuoteNum: {0} QuoteLine: {1} Message: Error -> {2}", QuoteNum, QuoteLine, e.Message);
             }
         }
+        
     }
 }
