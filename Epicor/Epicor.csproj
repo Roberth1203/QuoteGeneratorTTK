@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>4160425d-a32f-4c16-8149-7f011e8f48df</ProjectGuid>
+    <ProjectGuid>{4160425D-A32F-4C16-8149-7F011E8F48DF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Epicor</RootNamespace>
@@ -30,24 +30,79 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System"/>
-    
-    <Reference Include="System.Core"/>
-    <Reference Include="System.Xml.Linq"/>
-    <Reference Include="System.Data.DataSetExtensions"/>
-    
-    
-    <Reference Include="Microsoft.CSharp"/>
-    
-    <Reference Include="System.Data"/>
-    
-    <Reference Include="System.Net.Http"/>
-    
-    <Reference Include="System.Xml"/>
+    <Reference Include="Epicor.Ice.Version, Version=3.0.7.0, Culture=neutral, PublicKeyToken=5d3fa3c7105d7992, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Epicor\ERP10.0ClientTest\Client\Epicor.Ice.Version.dll</HintPath>
+    </Reference>
+    <Reference Include="Epicor.ServiceModel">
+      <HintPath>..\..\..\..\..\..\..\Epicor\ERP10.0ClientTest\Client\Epicor.ServiceModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Erp.Adapters.Country">
+      <HintPath>..\..\..\..\..\..\..\Epicor\ERP10.0ClientTest\Client\Erp.Adapters.Country.dll</HintPath>
+    </Reference>
+    <Reference Include="Erp.Adapters.Customer">
+      <HintPath>..\..\..\..\..\..\..\Epicor\ERP10.0ClientTest\Client\Erp.Adapters.Customer.dll</HintPath>
+    </Reference>
+    <Reference Include="Erp.Adapters.Quote">
+      <HintPath>..\..\..\..\..\..\..\Epicor\ERP10.0ClientTest\Client\Erp.Adapters.Quote.dll</HintPath>
+    </Reference>
+    <Reference Include="Erp.Adapters.SalesTer">
+      <HintPath>..\..\..\..\..\..\..\Epicor\ERP10.0ClientTest\Client\Erp.Adapters.SalesTer.dll</HintPath>
+    </Reference>
+    <Reference Include="Erp.Contracts.BO.Country">
+      <HintPath>..\..\..\..\..\..\..\Epicor\ERP10.0ClientTest\Client\Erp.Contracts.BO.Country.dll</HintPath>
+    </Reference>
+    <Reference Include="Erp.Contracts.BO.Customer">
+      <HintPath>..\..\..\..\..\..\..\Epicor\ERP10.0ClientTest\Client\Erp.Contracts.BO.Customer.dll</HintPath>
+    </Reference>
+    <Reference Include="Erp.Contracts.BO.Quote">
+      <HintPath>..\..\..\..\..\..\..\Epicor\ERP10.0ClientTest\Client\Erp.Contracts.BO.Quote.dll</HintPath>
+    </Reference>
+    <Reference Include="Erp.Contracts.BO.SalesTer">
+      <HintPath>..\..\..\..\..\..\..\Epicor\ERP10.0ClientTest\Client\Erp.Contracts.BO.SalesTer.dll</HintPath>
+    </Reference>
+    <Reference Include="Ice.Adapters.UserFile">
+      <HintPath>..\..\..\..\..\..\..\Epicor\ERP10.0ClientTest\Client\Ice.Adapters.UserFile.dll</HintPath>
+    </Reference>
+    <Reference Include="Ice.Contracts.BO.UserFile">
+      <HintPath>..\..\..\..\..\..\..\Epicor\ERP10.0ClientTest\Client\Ice.Contracts.BO.UserFile.dll</HintPath>
+    </Reference>
+    <Reference Include="Ice.Core.Session">
+      <HintPath>..\..\..\..\..\..\..\Epicor\ERP10.0ClientTest\Client\Ice.Core.Session.dll</HintPath>
+    </Reference>
+    <Reference Include="Ice.Lib.AppSettingsHandler">
+      <HintPath>..\..\..\..\..\..\..\Epicor\ERP10.0ClientTest\Client\Ice.Lib.AppSettingsHandler.dll</HintPath>
+    </Reference>
+    <Reference Include="Ice.Lib.EpiClientLib">
+      <HintPath>..\..\..\..\..\..\..\Epicor\ERP10.0ClientTest\Client\Ice.Lib.EpiClientLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Ice.Lib.GlobalStrings">
+      <HintPath>..\..\..\..\..\..\..\Epicor\ERP10.0ClientTest\Client\Ice.Lib.GlobalStrings.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Adapters.cs" />
+    <Compile Include="Credentials.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{9d7c7969-d0d2-43ad-8ff3-69f594cf2257}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
- </Project>
+</Project>
