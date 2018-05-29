@@ -35,7 +35,7 @@ namespace Utilities
         //}
         public String collector;
 
-        static String connectionString = String.Format(ConfigurationManager.AppSettings["AppMultiServer"], "MS_tunneltek", "sa", "Epicor123");
+        static String connectionString = String.Format(ConfigurationManager.AppSettings["AppMultiServer"], "MS_tunneltek", "", "");
 
         private static SqlConnection openConnection()
         {
