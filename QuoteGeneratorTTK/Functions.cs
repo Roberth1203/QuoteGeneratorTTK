@@ -17,6 +17,7 @@ namespace QuoteGeneratorTTK
         {
             Int32 customer = 0;
             Int32 index = 1;
+            String newID = String.Empty;
             DataTable d = new DataTable();
             Adapters epic = new Adapters();
             log.createLog();
@@ -32,15 +33,34 @@ namespace QuoteGeneratorTTK
                     Console.WriteLine(String.Format("[Registro {0}] -> idCliente: {1} Folio: {2}", index, row[2].ToString(), row[19].ToString()));
                     log.writeOnLog(String.Format("[{0}] - Cliente obtenido -> {1} Folio: -> {2}", DateTime.Now.ToString(), row[2].ToString(), row[19].ToString()));
 
-                    Int32 existe = epic.CustomerExists(row[2].ToString(), out String CustName);
+                    Int32 existe = epic.CustomerExists(row[2].ToString(), row[3].ToString(), out String CustName);
 
                     if (existe > 0)
                     {
-                        Console.WriteLine(String.Format("Cliente: {0} Nombre: {1}", existe, CustName));
-                        log.writeOnLog(String.Format("[{0}] - El cliente -> {1} ya existe en Epicor", DateTime.Now.ToString(), row[2].ToString()));
+                        if (CustName.ToLower().Contains(row[3].ToString().ToLower()))
+                        {
+                            Console.WriteLine(String.Format("Cliente: {0} Nombre: {1}", existe, CustName));
+                            log.writeOnLog(String.Format("[{0}] - El cliente -> {1} ya existe en Epicor", DateTime.Now.ToString(), row[2].ToString()));
 
-                        util.execOperation(String.Format(query.UPDSTATUSINTERFAZ, "99", row[18].ToString(), row[19].ToString(), row[2].ToString()));
-
+                            util.execOperation(String.Format(query.UPDSTATUSINTERFAZ, "99", row[18].ToString(), row[19].ToString(), row[2].ToString()));
+                        }
+                        else
+                        {
+                            Console.WriteLine(String.Format("El id o Nombre del cliente no existen, se agregará a Epicor!!", row[2].ToString()));
+                            log.writeOnLog(String.Format("[{0}] - El cliente -> {1} no existe, se procede a crearlo en Epicor", DateTime.Now.ToString(), row[2].ToString()));
+                            if (epic.ExceptionCollector.Equals(""))
+                            {
+                                newID = NextCustID();
+                                customer = epic.CreateCustomer(row, newID);
+                                Console.WriteLine(String.Format("Cliente creado: ", customer));
+                                log.writeOnLog(String.Format("[{0}] - El cliente -> {1} ha sido creado exitosamente", DateTime.Now.ToString(), row[2].ToString()));
+                            }
+                            else
+                            {
+                                Console.WriteLine("Ocurrió un problema al intentar crear el cliente!!");
+                                log.writeOnLog(String.Format("[{0}] - El cliente -> {1} no se pudo crear ... \n Exception: {2}", DateTime.Now.ToString(), row[2].ToString(), epic.ExceptionCollector));
+                            }
+                        }
                     }
                     else
                     {
@@ -48,7 +68,8 @@ namespace QuoteGeneratorTTK
                         log.writeOnLog(String.Format("[{0}] - El cliente -> {1} no existe, se procede a crearlo en Epicor", DateTime.Now.ToString(), row[2].ToString()));
                         if (epic.ExceptionCollector.Equals(""))
                         {
-                            customer = epic.CreateCustomer(row);
+                            newID = NextCustID();
+                            customer = epic.CreateCustomer(row, newID);
                             Console.WriteLine(String.Format("Cliente creado: ", customer));
                             log.writeOnLog(String.Format("[{0}] - El cliente -> {1} ha sido creado exitosamente", DateTime.Now.ToString(), row[2].ToString()));
                         }
@@ -88,6 +109,23 @@ namespace QuoteGeneratorTTK
             }
 
             return dt;
+        }
+
+        private String NextCustID()
+        {
+            String nextID = String.Empty;
+            try
+            {
+                DataTable x = util.getRecords(query.GETNEXTID);
+                int parse = Convert.ToInt32(x.Rows[0].ItemArray[0]) + 1;
+                nextID = parse.ToString();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[Error al obtener nuevo ID] - Message: " + e.Message + "\n[Description] - " + e.StackTrace);
+                log.writeOnLog(String.Format("[Error al obtener quotes] - Message: {0}\n[Description] - {1}", e.Message, e.StackTrace));
+            }
+            return nextID;
         }
     }
 }

@@ -61,10 +61,11 @@ namespace Epicor
             }
         }
 
-        public Int32 CustomerExists(String CustID, out String CustName)
+        public Int32 CustomerExists(String CustID, String Name, out String CustName)
         {
             CustName = String.Empty;
             Int32 cust = 0;
+            Boolean MorePages = false;
             try
             {
                 ExceptionCollector = String.Empty;
@@ -78,15 +79,15 @@ namespace Epicor
                 {
                     US.ClientCredentials.UserName.UserName = cred.username;
                     US.ClientCredentials.UserName.Password = cred.password;
-                    CustomerDataSet customer = new CustomerDataSet();
+                    CustomerListDataSet customer = new CustomerListDataSet();
                     customer.EnforceConstraints = true;
 
-                    customer = US.GetCustomer(CustID);
+                    customer = US.GetList(String.Format("Company = 'TT' AND CustID = '{0}' OR Name = '{1}'",CustID, Name), 0, 1, out MorePages);
 
-                    if (customer.Tables["Customer"].Rows.Count > 0)
+                    if (customer.Tables["CustomerList"].Rows.Count > 0)
                     {
-                        CustName = customer.Tables["Customer"].Rows[0]["Name"].ToString();
-                        cust = Convert.ToInt32(customer.Tables["Customer"].Rows[0]["CustNum"]);
+                        CustName = customer.Tables["CustomerList"].Rows[0]["Name"].ToString();
+                        cust = Convert.ToInt32(customer.Tables["CustomerList"].Rows[0]["CustNum"]);
                     }
                 }
             }
@@ -107,7 +108,7 @@ namespace Epicor
             return cust;
         }
 
-        public Int32 CreateCustomer(DataRow row)
+        public Int32 CreateCustomer(DataRow row, String newCustID)
         {
             sql = new DBFunctions();
             Statements stmt = new Statements();
@@ -133,7 +134,7 @@ namespace Epicor
 
                     //Carga de infor del cliente
                     newCustomer.Tables["Customer"].Rows[0]["CustNum"] = 0;
-                    newCustomer.Tables["Customer"].Rows[0]["CustID"] = row[2].ToString();
+                    newCustomer.Tables["Customer"].Rows[0]["CustID"] = /*row[2].ToString()*/ newCustID;
                     newCustomer.Tables["Customer"].Rows[0]["CustomerType"] = "PRO";
 
                     if (row[3].ToString().Length > 50) newCustomer.Tables["Customer"].Rows[0]["Name"] = row[3].ToString().Substring(0, 49).ToUpper(); else newCustomer.Tables["Customer"].Rows[0]["Name"] = row[3].ToString().ToUpper();
